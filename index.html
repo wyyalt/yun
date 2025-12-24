@@ -10,8 +10,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #052e16; /* Deep Forest Green */
-            background-image: radial-gradient(circle at center, #064e3b 0%, #022c22 100%);
+            background-color: #2e1065; /* Deep Purple */
+            background-image: radial-gradient(circle at center, #581c87 0%, #2e1065 100%);
             color: #fef3c7; /* Light Cream Text */
         }
         .festive-font {
@@ -43,6 +43,13 @@
         .gold-glow {
             text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
         }
+        @keyframes rapid-flash {
+            0%, 100% { opacity: 1; filter: brightness(1.5) drop-shadow(0 0 10px #fff); }
+            50% { opacity: 0.3; filter: brightness(0.8); }
+        }
+        .animate-rapid-flash {
+            animation: rapid-flash 0.2s infinite;
+        }
     </style>
 <script type="importmap">
 {
@@ -58,6 +65,5 @@
 </head>
 <body class="overflow-x-hidden min-h-screen">
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
 </body>
 </html>

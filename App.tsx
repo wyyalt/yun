@@ -23,10 +23,10 @@ const ChristmasTree: React.FC<{ opacity?: string }> = ({ opacity = "opacity-40" 
 );
 
 const THEME_PRESETS = [
+  { name: '梦幻紫', color: '#2e1065', gradient: 'radial-gradient(circle at center, #581c87 0%, #2e1065 100%)' },
   { name: '森林绿', color: '#052e16', gradient: 'radial-gradient(circle at center, #064e3b 0%, #022c22 100%)' },
   { name: '经典红', color: '#450a0a', gradient: 'radial-gradient(circle at center, #7f1d1d 0%, #450a0a 100%)' },
   { name: '星空蓝', color: '#1e1b4b', gradient: 'radial-gradient(circle at center, #312e81 0%, #1e1b4b 100%)' },
-  { name: '暗夜黑', color: '#0f172a', gradient: 'radial-gradient(circle at center, #1e293b 0%, #020617 100%)' },
 ];
 
 const App: React.FC = () => {
