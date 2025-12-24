@@ -25,18 +25,12 @@ const LuckyWheel: React.FC<LuckyWheelProps> = ({ prizes, onSpinEnd, isSpinning, 
 
     setTimeout(() => {
       setIsSpinning(false);
-      // Calculate which prize the pointer is at (pointer is at the top, 0 degrees or 270 degrees depending on offset)
-      // The SVG is drawn starting from 0 (right). Pointer is at 270 (top).
-      // Normalized degree relative to the start of segments
       const actualDegree = (totalNewRotation % 360);
       const segmentAngle = 360 / prizes.length;
-      
-      // The wheel rotates clockwise. The pointer is at 270deg (relative to 0 at 3 o'clock).
-      // Prize index = floor((360 - (actualDegree + 90) % 360) / segmentAngle)
       const index = Math.floor(((360 - (actualDegree - 90)) % 360) / segmentAngle);
       const winningPrize = prizes[index % prizes.length];
       onSpinEnd(winningPrize);
-    }, 4000); // 4s transition match
+    }, 4000);
   };
 
   const renderSegments = () => {
@@ -44,13 +38,10 @@ const LuckyWheel: React.FC<LuckyWheelProps> = ({ prizes, onSpinEnd, isSpinning, 
     return prizes.map((prize, i) => {
       const startAngle = i * angle;
       const endAngle = (i + 1) * angle;
-      
-      // Calculate SVG path for the segment
       const x1 = 50 + 50 * Math.cos((Math.PI * startAngle) / 180);
       const y1 = 50 + 50 * Math.sin((Math.PI * startAngle) / 180);
       const x2 = 50 + 50 * Math.cos((Math.PI * endAngle) / 180);
       const y2 = 50 + 50 * Math.sin((Math.PI * endAngle) / 180);
-      
       const largeArcFlag = angle > 180 ? 1 : 0;
       
       return (
@@ -59,19 +50,20 @@ const LuckyWheel: React.FC<LuckyWheelProps> = ({ prizes, onSpinEnd, isSpinning, 
             d={`M 50 50 L ${x1} ${y1} A 50 50 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
             fill={prize.color}
             stroke="white"
-            strokeWidth="0.5"
+            strokeWidth="0.3"
+            opacity="0.9"
           />
           <text
             x="75"
             y="50"
             fill="white"
-            fontSize="4"
+            fontSize="3.8"
             fontWeight="bold"
             transform={`rotate(${startAngle + angle / 2}, 50, 50)`}
-            className="select-none pointer-events-none"
+            className="select-none pointer-events-none drop-shadow-md"
             style={{ textAnchor: 'middle' }}
           >
-            {prize.name.length > 15 ? prize.name.substring(0, 12) + '...' : prize.name}
+            {prize.name.length > 10 ? prize.name.substring(0, 8) + '..' : prize.name}
           </text>
         </g>
       );
@@ -80,23 +72,27 @@ const LuckyWheel: React.FC<LuckyWheelProps> = ({ prizes, onSpinEnd, isSpinning, 
 
   return (
     <div className="relative w-full max-w-md aspect-square mx-auto flex items-center justify-center group">
-      {/* Pointer */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-20">
-        <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
-           <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-yellow-600 absolute bottom-[-10px]"></div>
+      {/* Indicator */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4 z-20">
+        <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center border-4 border-white shadow-[0_5px_15px_rgba(251,191,36,0.4)]">
+           <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[14px] border-t-yellow-600 absolute bottom-[-14px]"></div>
         </div>
       </div>
 
-      {/* Outer Border */}
-      <div className="absolute inset-0 rounded-full border-[12px] border-yellow-600 shadow-2xl z-10 pointer-events-none bg-transparent flex items-center justify-center">
-        {/* Lights */}
-        {Array.from({ length: 12 }).map((_, i) => (
+      {/* Outer Glow Ring */}
+      <div className="absolute inset-[-10px] rounded-full border-[1px] border-yellow-500/20 z-0 animate-pulse pointer-events-none"></div>
+
+      {/* Decorative Outer Border */}
+      <div className="absolute inset-0 rounded-full border-[15px] border-yellow-700/80 shadow-2xl z-10 pointer-events-none bg-transparent flex items-center justify-center">
+        {/* Decorative Lights */}
+        {Array.from({ length: 24 }).map((_, i) => (
            <div 
             key={i} 
-            className={`absolute w-3 h-3 rounded-full bg-white shadow-[0_0_10px_white] animate-pulse`}
+            className={`absolute w-2 h-2 rounded-full bg-white shadow-[0_0_8px_white] animate-pulse`}
             style={{
-              transform: `rotate(${i * 30}deg) translateY(-210px)`,
-              animationDelay: `${i * 0.1}s`
+              transform: `rotate(${i * 15}deg) translateY(-210px)`,
+              animationDelay: `${i * 0.05}s`,
+              opacity: i % 2 === 0 ? 1 : 0.4
             }}
            />
         ))}
@@ -107,21 +103,21 @@ const LuckyWheel: React.FC<LuckyWheelProps> = ({ prizes, onSpinEnd, isSpinning, 
         className="w-full h-full relative transition-transform duration-[4000ms] cubic-bezier(0.15, 0, 0.15, 1)"
         style={{ transform: `rotate(${rotation}deg)` }}
       >
-        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-xl" ref={wheelRef}>
+        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-2xl" ref={wheelRef}>
           {renderSegments()}
-          {/* Inner Circle */}
-          <circle cx="50" cy="50" r="4" fill="white" />
+          <circle cx="50" cy="50" r="5" fill="#022c22" stroke="#facc15" strokeWidth="0.5" />
         </svg>
       </div>
 
-      {/* Spin Button */}
+      {/* Spin Button - Red but smaller and balanced */}
       <button
         onClick={spin}
         disabled={isSpinning || prizes.length === 0}
-        className={`absolute z-30 w-24 h-24 rounded-full bg-red-600 hover:bg-red-700 border-4 border-yellow-400 text-white font-bold text-xl shadow-2xl transition-all transform active:scale-95 flex items-center justify-center
-          ${isSpinning ? 'opacity-80 cursor-not-allowed' : 'hover:scale-110'}`}
+        className={`absolute z-30 w-28 h-28 rounded-full bg-red-700 hover:bg-red-600 border-[6px] border-yellow-500 text-white font-black text-2xl shadow-[0_15px_40px_rgba(0,0,0,0.5)] transition-all transform active:scale-95 flex items-center justify-center text-center leading-none flex-col gap-1
+          ${isSpinning ? 'opacity-80 cursor-not-allowed' : 'hover:scale-110 active:shadow-inner'}`}
       >
-        {isSpinning ? '...' : 'SPIN'}
+        <span className="text-[10px] tracking-[0.2em] font-light text-yellow-300">SPIN</span>
+        <span className="drop-shadow-lg">抽奖</span>
       </button>
     </div>
   );

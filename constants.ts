@@ -2,12 +2,12 @@
 import { Prize } from './types';
 
 export const INITIAL_PRIZES: Prize[] = [
-  { id: '1', name: 'Christmas Gift Box', color: '#dc2626', weight: 1 },
-  { id: '2', name: 'Hot Cocoa Kit', color: '#059669', weight: 1 },
-  { id: '3', name: 'Candy Cane', color: '#ca8a04', weight: 1 },
-  { id: '4', name: 'Woolen Socks', color: '#2563eb', weight: 1 },
-  { id: '5', name: 'Gingerbread Man', color: '#92400e', weight: 1 },
-  { id: '6', name: 'Snowman Plush', color: '#0891b2', weight: 1 },
+  { id: '1', name: '平安果', color: '#ca8a04', weight: 1 },
+  { id: '2', name: '巧克力', color: '#2563eb', weight: 1 },
+  { id: '3', name: '手捧花', color: '#9333ea', weight: 1 },
+  { id: '4', name: '现金红包52', color: '#db2777', weight: 1 },
+  { id: '5', name: '现金红包88', color: '#0891b2', weight: 1 },
+  { id: '6', name: '奶茶一杯', color: '#0ea5e9', weight: 1 },
 ];
 
 export const FESTIVE_COLORS = [

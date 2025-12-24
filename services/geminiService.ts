@@ -5,7 +5,7 @@ export const generateFestivePrizes = async () => {
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: 'Generate 6 creative and festive Christmas-themed raffle prizes. Return only a JSON array of names.',
+    contents: '生成6个有创意的圣诞抽奖奖品（中文名称）。仅返回一个字符串数组的 JSON。',
     config: {
       responseMimeType: 'application/json',
       responseSchema: {
